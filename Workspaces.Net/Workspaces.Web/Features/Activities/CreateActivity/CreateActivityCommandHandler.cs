@@ -1,0 +1,33 @@
+using MediatR;
+using Workspaces.Net.Web.Infrastructure.Context;
+using Workspaces.Net.Web.Infrastructure.Models;
+
+namespace Workspaces.Net.Web.Features.Activities.CreateActivity
+{
+    public class CreateActivityCommandHandler:IRequestHandler<CreateActivityCommand, CreateActivityCommandResponse>
+    {
+        private readonly ApplicationDbContext _context;
+
+        public CreateActivityCommandHandler(ApplicationDbContext context)
+        {
+            this._context = context; 
+        }
+        
+        public async Task<CreateActivityCommandResponse> Handle(CreateActivityCommand request, CancellationToken cancellationToken)
+        {
+            Activity activity = new Activity()
+            {
+                Id = Guid.NewGuid(),
+                Title = request.Title,
+                Content = request.Content,
+                DateCreated = request.DateCreated
+            };
+            
+            await this._context.Activities.AddAsync(activity, cancellationToken);
+            await this._context.SaveChangesAsync(cancellationToken);
+            
+            CreateActivityCommandResponse response = new CreateActivityCommandResponse(activity.Id, activity.Title, activity.Content, activity.DateCreated);
+            return response;
+        }
+    }
+}
