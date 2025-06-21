@@ -16,6 +16,9 @@ namespace Workspaces.Net.Web.Infrastructure.Models
        [Column("content", TypeName = "TEXT")]
        public string Content { get; init; } = string.Empty;
        
+       [Column("is_completed", TypeName = "BOOLEAN")]
+       public bool IsCompleted { get; init; }
+       
        [Column("date_created",TypeName = "TIMESTAMP WITH TIME ZONE")]
        public DateTime DateCreated { get; init; }
     }

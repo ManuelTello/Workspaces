@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Workspaces.Net.Web.Features.Activities.CreateActivity;
+using Workspaces.Net.Web.Features.Activities.Create;
 using Workspaces.Net.Web.Infrastructure.Context;
 
 namespace Workspaces.Net.Tests.Handlers
@@ -11,7 +11,6 @@ namespace Workspaces.Net.Tests.Handlers
 
         private CreateActivityCommand _command;
         
-        
         [SetUp]
         public void Setup()
         {
@@ -21,9 +20,9 @@ namespace Workspaces.Net.Tests.Handlers
         }
 
         [TearDown]
-        public void TearDown()
+        public async Task TearDown()
         {
-            this._context.Dispose();
+            await this._context.DisposeAsync();
         }
 
         [Test]
@@ -31,7 +30,8 @@ namespace Workspaces.Net.Tests.Handlers
         {
             var handler = new CreateActivityCommandHandler(this._context);
             var result = await handler.Handle(this._command,CancellationToken.None);
-            Assert.That(result.DateCreated, Is.EqualTo(this._command.DateCreated));
+            var dbResult = await this._context.Activities.SingleOrDefaultAsync(x => x.Id == result.Id);
+            Assert.That(dbResult, Is.Not.Null);
         }
     }
 }

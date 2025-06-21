@@ -2,7 +2,7 @@ using MediatR;
 using Workspaces.Net.Web.Infrastructure.Context;
 using Workspaces.Net.Web.Infrastructure.Models;
 
-namespace Workspaces.Net.Web.Features.Activities.CreateActivity
+namespace Workspaces.Net.Web.Features.Activities.Create
 {
     public class CreateActivityCommandHandler:IRequestHandler<CreateActivityCommand, CreateActivityCommandResponse>
     {

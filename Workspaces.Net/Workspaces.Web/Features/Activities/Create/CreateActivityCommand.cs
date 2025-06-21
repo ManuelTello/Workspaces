@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Workspaces.Net.Web.Features.Activities.CreateActivity
+namespace Workspaces.Net.Web.Features.Activities.Create
 {
     public record CreateActivityCommand(string Title, string Content, DateTime DateCreated):IRequest<CreateActivityCommandResponse>;
 }
