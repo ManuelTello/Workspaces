@@ -8,18 +8,18 @@ namespace Workspaces.Net.Web.Infrastructure.Models
     {
        [Key]
        [Column("id",TypeName="UUID")]
-       public Guid Id { get; init; }
+       public Guid Id { get; set; }
 
        [Column("title", TypeName = "VARCHAR(250)")]
-       public string Title { get; init; } = string.Empty;
+       public string Title { get; set; } = string.Empty;
 
        [Column("content", TypeName = "TEXT")]
-       public string Content { get; init; } = string.Empty;
+       public string Content { get; set; } = string.Empty;
        
        [Column("is_completed", TypeName = "BOOLEAN")]
-       public bool IsCompleted { get; init; }
+       public bool IsCompleted { get; set; }
        
        [Column("date_created",TypeName = "TIMESTAMP WITH TIME ZONE")]
-       public DateTime DateCreated { get; init; }
+       public DateTime DateCreated { get; set; }
     }
 }

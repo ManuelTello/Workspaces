@@ -1,28 +1,28 @@
 namespace Workspaces.Net.Web.Shared
 {
-    public sealed class Result<T>
+    public sealed class Result<TResult>
     {
         public bool IsSuccess { get; init; }
-        
-        public T Value { get; init; }
-        
+
+        public TResult Value { get; init; }
+
         public Error Error { get; init; }
 
-        private Result(bool isSuccess, T value, Error error)
+        private Result(bool isSuccess, TResult value, Error error)
         {
-           this.IsSuccess = isSuccess;
-           this.Value = value;
-           this.Error = error;
+            this.IsSuccess = isSuccess;
+            this.Value = value;
+            this.Error = error;
         }
 
-        public static Result<T> Ok(T value)
+        public static Result<TResult> Ok(TResult value)
         {
-            throw new NotImplementedException(); 
+            return new Result<TResult>(true, value, Error.None);
         }
 
-        public static Result<T> Fail(Error error)
+        public static Result<TResult> Fail(Error error)
         {
-            throw new NotImplementedException(); 
+            return new Result<TResult>(false,default,error);
         }
     }
 }

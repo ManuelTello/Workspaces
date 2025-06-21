@@ -1,9 +1,9 @@
-using Workspaces.Net.Web.ErrorType;
+using Workspaces.Net.Web.Shared;
 
 namespace Workspaces.Net.Web.Errors
 {
     public static class ActivityErrors
     {
-        public static readonly SingleError UpdateActivityCompletedStateNotFound = new SingleError("Features.Activities.UpdateCompletedState", "ActivityErrors not found.");
+        public static readonly Error UpdateActivityCompletedStateNotFound = new Error("Features.Activities.UpdateCompletedState", "Activity not found.");
     }
 }

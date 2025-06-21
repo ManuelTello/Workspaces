@@ -12,13 +12,16 @@ namespace Workspaces.Net.Tests.Handlers
 
         private Activity _activity;
 
+        private UpdateCompletedStateCommandHandler _handler;
+
         private UpdateCompletedStateCommand _command;
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             this._context = new ApplicationDbContext(optionsBuilder);
+            this._handler = new UpdateCompletedStateCommandHandler(this._context);
             this._activity = new Activity()
             {
                 Id = Guid.NewGuid(),
@@ -28,6 +31,9 @@ namespace Workspaces.Net.Tests.Handlers
                 IsCompleted = false
             };
             this._command = new UpdateCompletedStateCommand(this._activity.Id);
+            
+            await this._context.Activities.AddAsync(this._activity);
+            await this._context.SaveChangesAsync();
         }
 
         [TearDown]
@@ -37,13 +43,12 @@ namespace Workspaces.Net.Tests.Handlers
         }
 
         [Test]
-        public async Task UpdateActivityIsCompletedState_ActivityInFalseState_TheActivityInTrueState()
+        public async Task UpdateActivityIsCompletedState_ActivityInFalseState_TheActivityCompleteTrueState()
         {
-            await this._context.Activities.AddAsync(this._activity);
-            await this._context.SaveChangesAsync();
-            var handler = new UpdateCompletedStateCommandHandler(this._context);
-            await handler.Handle(this._command, CancellationToken.None);
-            
+            var result = await this._handler.Handle(this._command, CancellationToken.None);
+            Assert.That(result.IsSuccess, Is.True,$"The update operation could not be completed");
+            var activityUpdated = await this._context.Activities.SingleAsync(a => a.Id == this._activity.Id);
+            Assert.That(activityUpdated.IsCompleted, Is.True,"The 'is_completed' field is incorrect.");
         }
     }
 }

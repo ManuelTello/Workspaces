@@ -25,9 +25,9 @@ namespace Workspaces.Net.Web.Features.Activities.UpdateCompletedState
             }
             else
             {
-                await this._context.Activities.Where(x => x.Id == request.Id)
-                    .ExecuteUpdateAsync(x => 
-                        x.SetProperty(p => p.IsCompleted, !activity.IsCompleted), cancellationToken);
+                activity.IsCompleted = !activity.IsCompleted;
+                this._context.Activities.Update(activity);
+                await this._context.SaveChangesAsync(cancellationToken);
                 Result<Unit> result = Result<Unit>.Ok(Unit.Value);
                 return result;
             }
