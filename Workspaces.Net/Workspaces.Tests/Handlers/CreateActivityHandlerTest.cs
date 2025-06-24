@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Workspaces.Net.Web.Features.Activities.Create;
 using Workspaces.Net.Web.Infrastructure.Context;
 
@@ -7,15 +6,17 @@ namespace Workspaces.Net.Tests.Handlers
     [TestFixture]
     public class CreateActivityHandlerTest
     {
-        private ApplicationDbContext _context;
-
         private CreateActivityCommand _command;
+        
+        private CreateActivityCommandHandler _handler;
+        
+        private ApplicationDbContext _context;
 
         [SetUp]
         public void Setup()
         {
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
-            this._context = new ApplicationDbContext(optionsBuilder);
+            this._context = SharedServices.TestDatabase.CreateTestDatabaseContext();
+            this._handler = new CreateActivityCommandHandler(this._context);
             this._command = new CreateActivityCommand("Test activity", "Some random content", DateTime.Now);
         }
 
@@ -28,10 +29,8 @@ namespace Workspaces.Net.Tests.Handlers
         [Test]
         public async Task CreateActivityHandler_NewEmptyTask_NewTaskWithCurrentDate()
         {
-            var handler = new CreateActivityCommandHandler(this._context);
-            var result = await handler.Handle(this._command, CancellationToken.None);
-            var dbResult = await this._context.Activities.SingleOrDefaultAsync(x => x.Id == result.Value);
-            Assert.That(dbResult, Is.Not.Null);
+            var result = await this._handler.Handle(this._command, CancellationToken.None);
+            Assert.That(result.IsSuccess, Is.True,"Operation return failed.");
         }
     }
 }

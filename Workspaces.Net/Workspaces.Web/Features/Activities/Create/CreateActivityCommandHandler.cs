@@ -5,7 +5,7 @@ using Workspaces.Net.Web.Infrastructure.Models;
 
 namespace Workspaces.Net.Web.Features.Activities.Create
 {
-    public class CreateActivityCommandHandler : IRequestHandler<CreateActivityCommand, Result<Guid>>
+    public class CreateActivityCommandHandler : IRequestHandler<CreateActivityCommand, Result<Unit>>
     {
         private readonly ApplicationDbContext _context;
 
@@ -14,9 +14,8 @@ namespace Workspaces.Net.Web.Features.Activities.Create
             this._context = context;
         }
 
-        public async Task<Result<Guid>> Handle(CreateActivityCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(CreateActivityCommand request, CancellationToken cancellationToken)
         {
-            Result<Guid> result;
             Activity activity = new Activity()
             {
                 Id = Guid.NewGuid(),
@@ -28,8 +27,7 @@ namespace Workspaces.Net.Web.Features.Activities.Create
             await this._context.Activities.AddAsync(activity, cancellationToken);
             await this._context.SaveChangesAsync(cancellationToken);
 
-            result = Result.Ok(activity.Id);
-            return result;
+            return Result.Ok(Unit.Value);
         }
     }
 }
