@@ -13,7 +13,7 @@ namespace Workspaces.Net.Web.Infrastructure.Models
        [Column("title", TypeName = "VARCHAR(250)")]
        public string Title { get; set; } = string.Empty;
 
-       [Column("content", TypeName = "TEXT")]
+       [Column("content", TypeName = "VARCHAR(500)")]
        public string Content { get; set; } = string.Empty;
        
        [Column("is_completed", TypeName = "BOOLEAN")]
@@ -21,5 +21,9 @@ namespace Workspaces.Net.Web.Infrastructure.Models
        
        [Column("date_created",TypeName = "TIMESTAMP WITH TIME ZONE")]
        public DateTime DateCreated { get; set; }
+       
+       public Guid WorkspaceId { get; set; }
+
+       public Workspace Workspace { get; set; } = null!;
     }
 }
