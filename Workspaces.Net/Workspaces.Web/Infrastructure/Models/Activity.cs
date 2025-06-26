@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Workspaces.Net.Web.Infrastructure.Models
 {
-    [Table("activities")]
+    [Table("Activities")]
     public class Activity
     {
        [Key]
